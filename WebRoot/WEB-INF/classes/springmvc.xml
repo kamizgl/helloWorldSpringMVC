@@ -14,17 +14,33 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
 <!-- 配置Handler -->
-<bean name="/queryItems.action" class="ssm.controller.ItemsController"></bean>
+<bean id="items" name="/queryItems.action" class="ssm.controller.ItemsController"></bean>
+<bean id="items2" name="/queryItems12.action" class="ssm.controller.ItemsController2"></bean>
 
 <!-- 处理器映射器 
 	讲bean的name作为url进行查找，需要在配置handler是指定beanname（就是url）
 -->
+
+<!-- 这个是普通版本 -->
 <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+
+<!-- 下面那个是增强版本 -->
+<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	<property name="mappings">
+		<props>
+			<prop key="/queryItems1.action">items</prop>
+			<prop key="/queryItems2.action">items2</prop>
+		</props>
+	</property>
+</bean>
 
 <!-- 处理器适配器 
 	所有的处理器适配器都实现 Handler接口
 -->
 <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/> 
+<bean class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"/> 
+
+
 <!--  视图解析器   --> 
 
 </beans>

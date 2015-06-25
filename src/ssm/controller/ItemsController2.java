@@ -1,22 +1,25 @@
 package ssm.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 
 import ssm.po.Items;
 
-public class ItemsController implements Controller{
+public class ItemsController2 implements HttpRequestHandler{
 
 	@Override
-	public ModelAndView handleRequest(HttpServletRequest arg0,
-			HttpServletResponse arg1) throws Exception {
-		//调用service 查找数据库，查询商品列表，这里使用静态数据模拟
+	public void handleRequest(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
 		List<Items> itemsList = new ArrayList<Items>();
 		//向list中填充静态数据
 		
@@ -32,16 +35,7 @@ public class ItemsController implements Controller{
 		
 		itemsList.add(items_1);
 		itemsList.add(items_2);
-
-		//返回ModelAndView
-		ModelAndView modelAndView = new ModelAndView();
-		//相当于request的setAttribut
-		modelAndView.addObject("itemsList",itemsList);
-		
-		//指定视图
-		modelAndView.setViewName("/WEB-INF/jsp/items/itemsList.jsp");
-		
-		return modelAndView;
+		request.setAttribute("itemsList", itemsList);
+		request.getRequestDispatcher("/WEB-INF/jsp/items/itemsList.jsp").forward(request, response);
 	}
-	
 }
